@@ -30,3 +30,13 @@ print(names(missing_values[missing_values > 0]))
 # Display total number of missing values
 print("Total Number of Missing Values:")
 print(sum(missing_values))
+
+# Load the lubridate library for handling dates and times
+library(lubridate)
+
+# Assuming your dataset is named "traffic_data" and the time column is named "Time"
+
+# Convert the time column to POSIXct format
+traffic_data$Time <- as.POSIXct(traffic_data$Time, format = "%I:%M:%S %p")
+
+# Now the "Time" column will be in POSIXct format, which allows for easier manipulation of dates and times
