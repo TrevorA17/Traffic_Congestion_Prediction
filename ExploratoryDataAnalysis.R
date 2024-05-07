@@ -189,3 +189,23 @@ barplot(table(traffic_data$Day_of_the_week), main = "Bar Plot of Day_of_the_week
 
 # Bar plot for TrafficSituation
 barplot(table(traffic_data$TrafficSituation), main = "Bar Plot of TrafficSituation", xlab = "TrafficSituation", ylab = "Frequency", col = "purple")
+
+# Multivariate Plots
+
+# Scatter plot for CarCount vs. Total
+plot(traffic_data$Total, traffic_data$CarCount, 
+     main = "Scatter Plot: CarCount vs. Total", 
+     xlab = "Total", ylab = "CarCount", 
+     col = "blue", pch = 19)
+
+# Box plot for Total grouped by Day_of_the_week
+boxplot(Total ~ Day_of_the_week, data = traffic_data, 
+        main = "Box Plot: Total by Day_of_the_week", 
+        xlab = "Day_of_the_week", ylab = "Total", 
+        col = "green")
+
+# Box plot for Total grouped by TrafficSituation
+boxplot(Total ~ TrafficSituation, data = traffic_data, 
+        main = "Box Plot: Total by TrafficSituation", 
+        xlab = "TrafficSituation", ylab = "Total", 
+        col = "red")
