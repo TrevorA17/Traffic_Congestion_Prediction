@@ -45,13 +45,11 @@ print(dim(test_data))
 library(boot)
 
 # Define a function to compute the statistic of interest (e.g., mean, median, etc.)
-# For demonstration purposes, let's compute the mean of the Total variable
+# let's compute the mean of the Total variable
 compute_statistic <- function(data, indices) {
   sample_data <- data[indices, , drop = FALSE]  # Ensure we keep the data frame structure
   return(mean(sample_data$Total))
 }
-
-# Assuming your dataset is named "traffic_data"
 
 # Perform bootstrapping
 bootstrap_results <- boot(traffic_data, statistic = compute_statistic, R = 1000)
