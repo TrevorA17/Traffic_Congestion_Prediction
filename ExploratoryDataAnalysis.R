@@ -19,3 +19,26 @@ head(traffic_data)
 
 # View the dataset in a separate viewer window
 View(traffic_data)
+
+# Measures of Frequency
+
+# Frequency table for Day_of_the_week
+day_freq <- table(traffic_data$Day_of_the_week)
+print("Frequency table for Day_of_the_week:")
+print(day_freq)
+
+# Proportion table for Day_of_the_week
+day_prop <- prop.table(day_freq)
+print("Proportion table for Day_of_the_week:")
+print(day_prop)
+
+# Frequency table for TrafficSituation
+situation_freq <- table(traffic_data$TrafficSituation)
+print("Frequency table for TrafficSituation:")
+print(situation_freq)
+
+# Proportion table for TrafficSituation
+situation_prop <- prop.table(situation_freq)
+print("Proportion table for TrafficSituation:")
+print(situation_prop)
+
