@@ -40,3 +40,27 @@ print("Dimensions of the training set:")
 print(dim(train_data))
 print("Dimensions of the testing set:")
 print(dim(test_data))
+
+# Load the boot package for bootstrapping
+library(boot)
+
+# Define a function to compute the statistic of interest (e.g., mean, median, etc.)
+# For demonstration purposes, let's compute the mean of the Total variable
+compute_statistic <- function(data, indices) {
+  sample_data <- data[indices, , drop = FALSE]  # Ensure we keep the data frame structure
+  return(mean(sample_data$Total))
+}
+
+# Assuming your dataset is named "traffic_data"
+
+# Perform bootstrapping
+bootstrap_results <- boot(traffic_data, statistic = compute_statistic, R = 1000)
+
+# Calculate bootstrap confidence intervals
+bootstrap_ci <- boot.ci(bootstrap_results, type = "basic")
+
+# Print the bootstrap results and confidence intervals
+print("Bootstrap results:")
+print(bootstrap_results)
+print("Bootstrap confidence intervals:")
+print(bootstrap_ci)
