@@ -91,3 +91,60 @@ print(paste("BusCount:", bus_mode))
 print(paste("TruckCount:", truck_mode))
 print(paste("Total:", total_mode))
 
+# Measures of Distribution
+
+# Range for numerical variables
+car_range <- range(traffic_data$CarCount)
+bike_range <- range(traffic_data$BikeCount)
+bus_range <- range(traffic_data$BusCount)
+truck_range <- range(traffic_data$TruckCount)
+total_range <- range(traffic_data$Total)
+
+print("Range for numerical variables:")
+print(paste("CarCount:", paste(car_range, collapse = " - ")))
+print(paste("BikeCount:", paste(bike_range, collapse = " - ")))
+print(paste("BusCount:", paste(bus_range, collapse = " - ")))
+print(paste("TruckCount:", paste(truck_range, collapse = " - ")))
+print(paste("Total:", paste(total_range, collapse = " - ")))
+
+# Variance for numerical variables
+car_var <- var(traffic_data$CarCount)
+bike_var <- var(traffic_data$BikeCount)
+bus_var <- var(traffic_data$BusCount)
+truck_var <- var(traffic_data$TruckCount)
+total_var <- var(traffic_data$Total)
+
+print("Variance for numerical variables:")
+print(paste("CarCount:", car_var))
+print(paste("BikeCount:", bike_var))
+print(paste("BusCount:", bus_var))
+print(paste("TruckCount:", truck_var))
+print(paste("Total:", total_var))
+
+# Standard deviation for numerical variables
+car_sd <- sd(traffic_data$CarCount)
+bike_sd <- sd(traffic_data$BikeCount)
+bus_sd <- sd(traffic_data$BusCount)
+truck_sd <- sd(traffic_data$TruckCount)
+total_sd <- sd(traffic_data$Total)
+
+print("Standard deviation for numerical variables:")
+print(paste("CarCount:", car_sd))
+print(paste("BikeCount:", bike_sd))
+print(paste("BusCount:", bus_sd))
+print(paste("TruckCount:", truck_sd))
+print(paste("Total:", total_sd))
+
+# Measures of Relationship
+
+# Correlation matrix for numerical variables
+correlation_matrix <- cor(traffic_data[c("CarCount", "BikeCount", "BusCount", "TruckCount", "Total")])
+
+print("Correlation matrix for numerical variables:")
+print(correlation_matrix)
+
+# Contingency table for Day_of_the_week vs. TrafficSituation
+contingency_table <- table(traffic_data$Day_of_the_week, traffic_data$TrafficSituation)
+
+print("Contingency table for Day_of_the_week vs. TrafficSituation:")
+print(contingency_table)
