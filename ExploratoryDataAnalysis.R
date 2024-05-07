@@ -148,3 +148,30 @@ contingency_table <- table(traffic_data$Day_of_the_week, traffic_data$TrafficSit
 
 print("Contingency table for Day_of_the_week vs. TrafficSituation:")
 print(contingency_table)
+
+# ANOVA (Analysis of Variance) Test
+
+# Perform ANOVA for CarCount vs. Day_of_the_week
+car_anova <- aov(CarCount ~ Day_of_the_week, data = traffic_data)
+print("ANOVA for CarCount vs. Day_of_the_week:")
+print(summary(car_anova))
+
+# Perform ANOVA for BikeCount vs. Day_of_the_week
+bike_anova <- aov(BikeCount ~ Day_of_the_week, data = traffic_data)
+print("ANOVA for BikeCount vs. Day_of_the_week:")
+print(summary(bike_anova))
+
+# Perform ANOVA for BusCount vs. Day_of_the_week
+bus_anova <- aov(BusCount ~ Day_of_the_week, data = traffic_data)
+print("ANOVA for BusCount vs. Day_of_the_week:")
+print(summary(bus_anova))
+
+# Perform ANOVA for TruckCount vs. Day_of_the_week
+truck_anova <- aov(TruckCount ~ Day_of_the_week, data = traffic_data)
+print("ANOVA for TruckCount vs. Day_of_the_week:")
+print(summary(truck_anova))
+
+# Perform ANOVA for Total vs. Day_of_the_week
+total_anova <- aov(Total ~ Day_of_the_week, data = traffic_data)
+print("ANOVA for Total vs. Day_of_the_week:")
+print(summary(total_anova))
