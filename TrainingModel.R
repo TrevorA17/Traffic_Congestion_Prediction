@@ -127,7 +127,7 @@ set.seed(123)
 # Define the control parameters for model training and evaluation
 train_control <- trainControl(method = "cv", number = 10)  # Basic cross-validation with 10 folds
 
-# Train multiple regression models (e.g., Linear Regression, Random Forest, etc.)
+# Train multiple regression models (e.g., Linear Regression, GBM, etc.)
 models <- list(
   LM = train(Total ~ ., data = traffic_data, method = "lm", trControl = train_control),
   gbm = train(Total ~ ., data = traffic_data, method = "gbm", trControl = train_control)
@@ -137,5 +137,29 @@ models <- list(
 results <- resamples(models)
 
 # Summarize and print model performance metrics (e.g., RMSE)
+summary_results <- summary(results)
+print(summary_results)
+
+# Load the caret package for model training and evaluation
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+
+# Define the control parameters for model training and evaluation
+train_control <- trainControl(method = "cv", number = 10, classProbs = TRUE)  # Basic cross-validation with 10 folds and class probabilities
+
+# Train multiple classification models (e.g., GBM, Logistic Regression, etc.)
+models <- list(
+  gbm = train(TrafficSituation ~ ., data = traffic_data, method = "gbm", trControl = train_control),
+  LR = train(TrafficSituation ~ ., data = traffic_data, method = "glm", trControl = train_control)
+  # Add more models as needed
+)
+
+# Compare model performance using resamples
+results <- resamples(models)
+
+# Summarize and print model performance metrics (e.g., Accuracy)
 summary_results <- summary(results)
 print(summary_results)
