@@ -130,7 +130,6 @@ train_control <- trainControl(method = "cv", number = 10)  # Basic cross-validat
 models <- list(
   LM = train(Total ~ ., data = traffic_data, method = "lm", trControl = train_control),
   RF = train(Total ~ ., data = traffic_data, method = "rf", trControl = train_control)
-  # Add more models as needed
 )
 
 # Compare model performance using resamples
