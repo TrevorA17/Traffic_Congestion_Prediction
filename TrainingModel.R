@@ -118,6 +118,7 @@ print(regression_model)
 ##Performance Comparison with resamples
 # Load the caret package for model training and evaluation
 library(caret)
+library(gbm)
 
 # Set the seed for reproducibility
 set.seed(123)
@@ -129,7 +130,7 @@ train_control <- trainControl(method = "cv", number = 10)  # Basic cross-validat
 # Train multiple regression models (e.g., Linear Regression, Random Forest, etc.)
 models <- list(
   LM = train(Total ~ ., data = traffic_data, method = "lm", trControl = train_control),
-  RF = train(Total ~ ., data = traffic_data, method = "rf", trControl = train_control)
+  gbm = train(Total ~ ., data = traffic_data, method = "gbm", trControl = train_control)
 )
 
 # Compare model performance using resamples
