@@ -175,3 +175,17 @@ print(summary(truck_anova))
 total_anova <- aov(Total ~ Day_of_the_week, data = traffic_data)
 print("ANOVA for Total vs. Day_of_the_week:")
 print(summary(total_anova))
+
+# Univariate Plots
+
+# Histogram for CarCount
+hist(traffic_data$CarCount, main = "Histogram of CarCount", xlab = "CarCount", col = "skyblue")
+
+# Density plot for BikeCount
+plot(density(traffic_data$BikeCount), main = "Density Plot of BikeCount", xlab = "BikeCount", col = "green")
+
+# Bar plot for Day_of_the_week
+barplot(table(traffic_data$Day_of_the_week), main = "Bar Plot of Day_of_the_week", xlab = "Day_of_the_week", ylab = "Frequency", col = "orange")
+
+# Bar plot for TrafficSituation
+barplot(table(traffic_data$TrafficSituation), main = "Bar Plot of TrafficSituation", xlab = "TrafficSituation", ylab = "Frequency", col = "purple")
