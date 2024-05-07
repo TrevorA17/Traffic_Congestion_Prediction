@@ -129,7 +129,6 @@ train_control <- trainControl(method = "cv", number = 10, classProbs = TRUE)  # 
 models <- list(
   RF = train(TrafficSituation ~ ., data = traffic_data, method = "rf", trControl = train_control),
   LR = train(TrafficSituation ~ ., data = traffic_data, method = "glm", trControl = train_control)
-  # Add more models as needed
 )
 
 # Compare model performance using resamples
