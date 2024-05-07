@@ -115,3 +115,27 @@ regression_model <- train(Total ~ .,
 # Print the regression model
 print(regression_model)
 
+##Performance Comparison with resamples
+# Load the caret package for model training and evaluation
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the control parameters for model training and evaluation
+train_control <- trainControl(method = "cv", number = 10, classProbs = TRUE)  # Basic cross-validation with 10 folds and class probabilities
+
+# Train multiple classification models (e.g., Random Forest, Logistic Regression, etc.)
+models <- list(
+  RF = train(TrafficSituation ~ ., data = traffic_data, method = "rf", trControl = train_control),
+  LR = train(TrafficSituation ~ ., data = traffic_data, method = "glm", trControl = train_control)
+  # Add more models as needed
+)
+
+# Compare model performance using resamples
+results <- resamples(models)
+
+# Summarize and print model performance metrics (e.g., Accuracy)
+summary_results <- summary(results)
+print(summary_results)
+
