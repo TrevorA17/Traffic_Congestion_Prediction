@@ -1,2 +1,2 @@
-# Traffic_Congestion_Prediction
-Predict traffic congestion levels in urban areas to optimize traffic management and transportation planning.
+# Traffic Congestion Prediction
+This project centers on the development of a machine learning model for predicting traffic situations in urban areas, leveraging historical data encompassing vehicle counts, timestamps, dates, and days of the week. Utilizing a Random Forest classification algorithm, the model categorizes traffic situations into 'low', 'normal', 'high', and 'heavy' classes, aiming to facilitate optimized traffic management and transportation planning. Deployed as a RESTful API using the Plumber package in R, the model allows users to make predictions by supplying input parameters such as time, date, vehicle counts, and total vehicle count, thereby enabling informed decision-making in traffic management strategies.
