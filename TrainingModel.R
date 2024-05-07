@@ -62,3 +62,19 @@ print("Bootstrap results:")
 print(bootstrap_results)
 print("Bootstrap confidence intervals:")
 print(bootstrap_ci)
+
+# Load the caret package for cross-validation
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the control parameters for cross-validation
+cv_control <- trainControl(method = "cv", number = 10)  # Basic cross-validation with 10 folds
+
+# Define the training model (example: linear regression)
+model <- train(Total ~ ., data = traffic_data, method = "lm", trControl = cv_control)
+
+# Print the model
+print(model)
+
