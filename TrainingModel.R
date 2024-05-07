@@ -78,3 +78,40 @@ model <- train(Total ~ ., data = traffic_data, method = "lm", trControl = cv_con
 # Print the model
 print(model)
 
+# Load the caret package for classification model training
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+
+# Define the control parameters for model training
+train_control <- trainControl(method = "cv", number = 10)  # Basic cross-validation with 10 folds
+
+# Train a classification model (example: Random Forest)
+classification_model <- train(TrafficSituation ~ ., 
+                              data = traffic_data, 
+                              method = "rf", 
+                              trControl = train_control)
+
+# Print the classification model
+print(classification_model)
+
+# Load the caret package for model training
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the control parameters for model training
+train_control <- trainControl(method = "cv", number = 10)  # Basic cross-validation with 10 folds
+
+# Train a regression model (example: Linear Regression)
+regression_model <- train(Total ~ ., 
+                          data = traffic_data, 
+                          method = "lm", 
+                          trControl = train_control)
+
+# Print the regression model
+print(regression_model)
+
