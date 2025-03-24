@@ -1,0 +1,463 @@
+---
+title: "Traffic Congestion Prediction"
+author: "Trevor Okinda"
+date: "2024"
+output:
+  github_document: 
+    toc: yes
+    toc_depth: 4
+    fig_width: 6
+    fig_height: 4
+    df_print: default
+editor_options:
+  chunk_output_type: console
+---
+
+# Student Details
+
+|                                              |     |
+|----------------------------------------------|-----|
+| **Student ID Number**                        | 134780 |
+| **Student Name**                             | Trevor Okinda |
+| **BBIT 4.2 Group**                           | C |
+| **Project Name**                             | Traffic Congestion Prediction |
+
+# Setup Chunk
+
+**Note:** the following KnitR options have been set as the global defaults: <BR> `knitr::opts_chunk$set(echo = TRUE, warning = FALSE, eval = TRUE, collapse = FALSE, tidy = TRUE)`.
+
+More KnitR options are documented here <https://bookdown.org/yihui/rmarkdown-cookbook/chunk-options.html> and here <https://yihui.org/knitr/options/>.
+
+```{r setup, include=FALSE}
+library(formatR)
+knitr::opts_chunk$set(
+  warning = FALSE,
+  collapse = FALSE
+)
+```
+
+### Source: 
+
+The dataset that was used can be downloaded here: *\<https://www.kaggle.com/datasets/hasibullahaman/traffic-prediction-dataset?select=Traffic.csv\>*
+
+### Reference:
+
+*\<Aman, H. (n.d.). Traffic Prediction Dataset. Retrieved from https://www.kaggle.com/datasets/hasibullahaman/traffic-prediction-dataset?select=Traffic.csv\>\
+Refer to the APA 7th edition manual for rules on how to cite datasets: <https://apastyle.apa.org/style-grammar-guidelines/references/examples/data-set-references>*
+
+# Exploratory Data Analysis
+## Load dataset
+```{r load dataset}
+# Load dataset
+traffic_data <- read.csv("traffic.csv", colClasses = c(
+  Time = "character",
+  Date = "integer",
+  Day_of_the_week = "factor",
+  CarCount = "integer",
+  BikeCount = "integer",
+  BusCount = "integer",
+  TruckCount = "integer",
+  Total = "integer",
+  TrafficSituation = "factor"
+))
+
+# Display the structure of the dataset
+str(traffic_data)
+
+# View the first few rows of the dataset
+head(traffic_data)
+
+# View the dataset in a separate viewer window
+View(traffic_data)
+```
+
+## Measures of frequency
+```{r MOF}
+# Measures of Frequency
+
+# Frequency table for Day_of_the_week
+day_freq <- table(traffic_data$Day_of_the_week)
+print("Frequency table for Day_of_the_week:")
+print(day_freq)
+
+# Proportion table for Day_of_the_week
+day_prop <- prop.table(day_freq)
+print("Proportion table for Day_of_the_week:")
+print(day_prop)
+
+# Frequency table for TrafficSituation
+situation_freq <- table(traffic_data$TrafficSituation)
+print("Frequency table for TrafficSituation:")
+print(situation_freq)
+
+# Proportion table for TrafficSituation
+situation_prop <- prop.table(situation_freq)
+print("Proportion table for TrafficSituation:")
+print(situation_prop)
+```
+
+## Measures of Central Tendency
+```{r MOCT}
+# Measures of Central Tendency
+
+# Mean for numerical variables
+car_mean <- mean(traffic_data$CarCount)
+bike_mean <- mean(traffic_data$BikeCount)
+bus_mean <- mean(traffic_data$BusCount)
+truck_mean <- mean(traffic_data$TruckCount)
+total_mean <- mean(traffic_data$Total)
+
+print("Mean for numerical variables:")
+print(paste("CarCount:", car_mean))
+print(paste("BikeCount:", bike_mean))
+print(paste("BusCount:", bus_mean))
+print(paste("TruckCount:", truck_mean))
+print(paste("Total:", total_mean))
+
+# Median for numerical variables
+car_median <- median(traffic_data$CarCount)
+bike_median <- median(traffic_data$BikeCount)
+bus_median <- median(traffic_data$BusCount)
+truck_median <- median(traffic_data$TruckCount)
+total_median <- median(traffic_data$Total)
+
+print("Median for numerical variables:")
+print(paste("CarCount:", car_median))
+print(paste("BikeCount:", bike_median))
+print(paste("BusCount:", bus_median))
+print(paste("TruckCount:", truck_median))
+print(paste("Total:", total_median))
+
+# Mode for numerical variables (using a custom function)
+get_mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+car_mode <- get_mode(traffic_data$CarCount)
+bike_mode <- get_mode(traffic_data$BikeCount)
+bus_mode <- get_mode(traffic_data$BusCount)
+truck_mode <- get_mode(traffic_data$TruckCount)
+total_mode <- get_mode(traffic_data$Total)
+
+print("Mode for numerical variables:")
+print(paste("CarCount:", car_mode))
+print(paste("BikeCount:", bike_mode))
+print(paste("BusCount:", bus_mode))
+print(paste("TruckCount:", truck_mode))
+print(paste("Total:", total_mode))
+```
+
+## Measures of Distribution
+```{r MOD}
+# Measures of Distribution
+
+# Range for numerical variables
+car_range <- range(traffic_data$CarCount)
+bike_range <- range(traffic_data$BikeCount)
+bus_range <- range(traffic_data$BusCount)
+truck_range <- range(traffic_data$TruckCount)
+total_range <- range(traffic_data$Total)
+
+print("Range for numerical variables:")
+print(paste("CarCount:", paste(car_range, collapse = " - ")))
+print(paste("BikeCount:", paste(bike_range, collapse = " - ")))
+print(paste("BusCount:", paste(bus_range, collapse = " - ")))
+print(paste("TruckCount:", paste(truck_range, collapse = " - ")))
+print(paste("Total:", paste(total_range, collapse = " - ")))
+
+# Variance for numerical variables
+car_var <- var(traffic_data$CarCount)
+bike_var <- var(traffic_data$BikeCount)
+bus_var <- var(traffic_data$BusCount)
+truck_var <- var(traffic_data$TruckCount)
+total_var <- var(traffic_data$Total)
+
+print("Variance for numerical variables:")
+print(paste("CarCount:", car_var))
+print(paste("BikeCount:", bike_var))
+print(paste("BusCount:", bus_var))
+print(paste("TruckCount:", truck_var))
+print(paste("Total:", total_var))
+
+# Standard deviation for numerical variables
+car_sd <- sd(traffic_data$CarCount)
+bike_sd <- sd(traffic_data$BikeCount)
+bus_sd <- sd(traffic_data$BusCount)
+truck_sd <- sd(traffic_data$TruckCount)
+total_sd <- sd(traffic_data$Total)
+
+print("Standard deviation for numerical variables:")
+print(paste("CarCount:", car_sd))
+print(paste("BikeCount:", bike_sd))
+print(paste("BusCount:", bus_sd))
+print(paste("TruckCount:", truck_sd))
+print(paste("Total:", total_sd))
+```
+
+## Measures of Relationship
+```{r MOR}
+# Measures of Relationship
+
+# Correlation matrix for numerical variables
+correlation_matrix <- cor(traffic_data[c("CarCount", "BikeCount", "BusCount", "TruckCount", "Total")])
+
+print("Correlation matrix for numerical variables:")
+print(correlation_matrix)
+
+# Contingency table for Day_of_the_week vs. TrafficSituation
+contingency_table <- table(traffic_data$Day_of_the_week, traffic_data$TrafficSituation)
+
+print("Contingency table for Day_of_the_week vs. TrafficSituation:")
+print(contingency_table)
+```
+
+## ANOVA
+```{r ANOVA}
+# ANOVA (Analysis of Variance) Test
+
+# Perform ANOVA for CarCount vs. Day_of_the_week
+car_anova <- aov(CarCount ~ Day_of_the_week, data = traffic_data)
+print("ANOVA for CarCount vs. Day_of_the_week:")
+print(summary(car_anova))
+
+# Perform ANOVA for BikeCount vs. Day_of_the_week
+bike_anova <- aov(BikeCount ~ Day_of_the_week, data = traffic_data)
+print("ANOVA for BikeCount vs. Day_of_the_week:")
+print(summary(bike_anova))
+
+# Perform ANOVA for BusCount vs. Day_of_the_week
+bus_anova <- aov(BusCount ~ Day_of_the_week, data = traffic_data)
+print("ANOVA for BusCount vs. Day_of_the_week:")
+print(summary(bus_anova))
+
+# Perform ANOVA for TruckCount vs. Day_of_the_week
+truck_anova <- aov(TruckCount ~ Day_of_the_week, data = traffic_data)
+print("ANOVA for TruckCount vs. Day_of_the_week:")
+print(summary(truck_anova))
+
+# Perform ANOVA for Total vs. Day_of_the_week
+total_anova <- aov(Total ~ Day_of_the_week, data = traffic_data)
+print("ANOVA for Total vs. Day_of_the_week:")
+print(summary(total_anova))
+```
+
+## Plots
+```{r Plots}
+# Univariate Plots
+
+# Histogram for CarCount
+hist(traffic_data$CarCount, main = "Histogram of CarCount", xlab = "CarCount", col = "skyblue")
+
+# Density plot for BikeCount
+plot(density(traffic_data$BikeCount), main = "Density Plot of BikeCount", xlab = "BikeCount", col = "green")
+
+# Bar plot for Day_of_the_week
+barplot(table(traffic_data$Day_of_the_week), main = "Bar Plot of Day_of_the_week", xlab = "Day_of_the_week", ylab = "Frequency", col = "orange")
+
+# Bar plot for TrafficSituation
+barplot(table(traffic_data$TrafficSituation), main = "Bar Plot of TrafficSituation", xlab = "TrafficSituation", ylab = "Frequency", col = "purple")
+
+# Multivariate Plots
+
+# Scatter plot for CarCount vs. Total
+plot(traffic_data$Total, traffic_data$CarCount, 
+     main = "Scatter Plot: CarCount vs. Total", 
+     xlab = "Total", ylab = "CarCount", 
+     col = "blue", pch = 19)
+
+# Box plot for Total grouped by Day_of_the_week
+boxplot(Total ~ Day_of_the_week, data = traffic_data, 
+        main = "Box Plot: Total by Day_of_the_week", 
+        xlab = "Day_of_the_week", ylab = "Total", 
+        col = "green")
+
+# Box plot for Total grouped by TrafficSituation
+boxplot(Total ~ TrafficSituation, data = traffic_data, 
+        main = "Box Plot: Total by TrafficSituation", 
+        xlab = "TrafficSituation", ylab = "Total", 
+        col = "red")
+```
+
+# Preprocessing and Data Transformation
+## Missing Values
+```{r Missing Values}
+# Count missing values in each column
+missing_values <- colSums(is.na(traffic_data))
+
+# Display columns with missing values
+print("Columns with Missing Values:")
+print(names(missing_values[missing_values > 0]))
+
+# Display total number of missing values
+print("Total Number of Missing Values:")
+print(sum(missing_values))
+```
+
+## Transformation
+```{r Transformation}
+# Load the lubridate library for handling dates and times
+library(lubridate)
+
+# Convert the time column to POSIXct format
+traffic_data$Time <- as.POSIXct(traffic_data$Time, format = "%I:%M:%S %p")
+```
+
+# Training Model
+## Data Splitting
+```{r Data Splitting}
+# Load the caret package for data splitting
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Create an index for splitting the data
+train_index <- createDataPartition(traffic_data$TrafficSituation, p = 0.8, list = FALSE)
+
+# Split the data into training and testing sets
+train_data <- traffic_data[train_index, ]
+test_data <- traffic_data[-train_index, ]
+
+# Print the dimensions of the training and testing sets
+print("Dimensions of the training set:")
+print(dim(train_data))
+print("Dimensions of the testing set:")
+print(dim(test_data))
+```
+
+## Bootstrapping
+```{r Bootstrapping}
+# Load the boot package for bootstrapping
+library(boot)
+
+# Define a function to compute the statistic of interest (e.g., mean, median, etc.)
+# let's compute the mean of the Total variable
+compute_statistic <- function(data, indices) {
+  sample_data <- data[indices, , drop = FALSE]  # Ensure we keep the data frame structure
+  return(mean(sample_data$Total))
+}
+
+# Perform bootstrapping
+bootstrap_results <- boot(traffic_data, statistic = compute_statistic, R = 1000)
+
+# Calculate bootstrap confidence intervals
+bootstrap_ci <- boot.ci(bootstrap_results, type = "basic")
+
+# Print the bootstrap results and confidence intervals
+print("Bootstrap results:")
+print(bootstrap_results)
+print("Bootstrap confidence intervals:")
+print(bootstrap_ci)
+```
+
+## Cross-Validation
+```{r Cross-Validation}
+# Load the caret package for cross-validation
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the control parameters for cross-validation
+cv_control <- trainControl(method = "cv", number = 10)  # Basic cross-validation with 10 folds
+
+# Define the training model (example: linear regression)
+model <- train(Total ~ ., data = traffic_data, method = "lm", trControl = cv_control)
+
+# Print the model
+print(model)
+```
+
+## Training different models
+```{r Model training}
+# Load the caret package for classification model training
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+
+# Define the control parameters for model training
+train_control <- trainControl(method = "cv", number = 10)  # Basic cross-validation with 10 folds
+
+# Train a classification model (example: Random Forest)
+classification_model <- train(TrafficSituation ~ ., 
+                              data = traffic_data, 
+                              method = "rf", 
+                              trControl = train_control)
+
+# Print the classification model
+print(classification_model)
+
+# Load the caret package for model training
+library(caret)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+# Define the control parameters for model training
+train_control <- trainControl(method = "cv", number = 10)  # Basic cross-validation with 10 folds
+
+# Train a regression model (example: Linear Regression)
+regression_model <- train(Total ~ ., 
+                          data = traffic_data, 
+                          method = "lm", 
+                          trControl = train_control)
+
+# Print the regression model
+print(regression_model)
+```
+
+## Performance Comparison
+```{r Performance comparison}
+##Performance Comparison with resamples
+# Load the caret package for model training and evaluation
+library(caret)
+library(gbm)
+
+# Set the seed for reproducibility
+set.seed(123)
+
+
+# Define the control parameters for model training and evaluation
+train_control <- trainControl(method = "cv", number = 10)  # Basic cross-validation with 10 folds
+
+# Train multiple regression models (e.g., Linear Regression, GBM, etc.)
+models <- list(
+  LM = train(Total ~ ., data = traffic_data, method = "lm", trControl = train_control),
+  gbm = train(Total ~ ., data = traffic_data, method = "gbm", trControl = train_control)
+)
+
+# Compare model performance using resamples
+results <- resamples(models)
+
+# Summarize and print model performance metrics (e.g., RMSE)
+summary_results <- summary(results)
+print(summary_results)
+```
+
+## Saving Model
+```{r Saving Model}
+# Load the saved model
+loaded_classification_model <- readRDS("./models/saved_classification_model.rds")
+
+# Prepare new data for prediction
+new_data <- data.frame(
+  Time = "1:00:00 AM",
+  Date = 10,
+  Day_of_the_week = "Tuesday",
+  CarCount = 40,
+  BikeCount = 5,
+  BusCount = 2,
+  TruckCount = 2,
+  Total = 10
+)
+# Use the loaded model to make predictions
+predictions_loaded_model <- predict(loaded_classification_model, newdata = new_data)
+
+# Print predictions
+print(predictions_loaded_model)
+
+```
+

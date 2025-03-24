@@ -26,8 +26,6 @@ library(caret)
 # Set the seed for reproducibility
 set.seed(123)
 
-# Assuming your dataset is named "traffic_data"
-
 # Create an index for splitting the data
 train_index <- createDataPartition(traffic_data$TrafficSituation, p = 0.8, list = FALSE)
 

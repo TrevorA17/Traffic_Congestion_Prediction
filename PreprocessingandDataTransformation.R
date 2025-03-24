@@ -34,8 +34,6 @@ print(sum(missing_values))
 # Load the lubridate library for handling dates and times
 library(lubridate)
 
-# Assuming your dataset is named "traffic_data" and the time column is named "Time"
-
 # Convert the time column to POSIXct format
 traffic_data$Time <- as.POSIXct(traffic_data$Time, format = "%I:%M:%S %p")
 
